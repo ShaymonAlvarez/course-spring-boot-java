@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "tb_user")
 public class User implements Serializable{
@@ -24,11 +26,12 @@ public class User implements Serializable{
 	private String phone;
 	private String password;
 	
+	@JsonIgnore//para evitar loop infinito de chamadas entre as classes User e Order por conterem uma relação de mao dupla entre si
 	//relação um para muitos para a criação da chave do banco de dados, relação do client(User)
 	//para com o Order (orders)
 	@OneToMany(mappedBy = "client")//indica qual é o nome que está relacionado essa associação na outra classe
 	private List<Order> orders = new ArrayList<>();
-	
+	//quando há uma associação "para muitos" o JPA não carrega os mesmos no banco de dados para não extourar a memoria por padrão
 	public User()
 	{
 		

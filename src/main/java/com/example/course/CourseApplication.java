@@ -11,3 +11,7 @@ public class CourseApplication {
 	}
 
 }
+
+//spring.jpa.open-in-view=true
+//permite o serializador json jackson puxar pedidos associados as classes
+//permite que um componete do fim do ciclo de vida chame o banco de dados
