@@ -8,8 +8,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 //mapeamentos JPA
 @Entity
@@ -24,7 +26,10 @@ public class Category implements Serializable {
 	private String name;
 	
 	//Transient impede do JPA interpretar a linha abaixo
-	@Transient
+	//@Transient
+	//mapea para a coleção criada na classe Product
+	@JsonIgnore
+	@ManyToMany(mappedBy = "categories")
 	private Set<Product> products = new HashSet<>();
 	
 	public Category()

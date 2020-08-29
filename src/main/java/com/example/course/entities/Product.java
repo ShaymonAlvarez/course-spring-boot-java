@@ -8,8 +8,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 //mapeamentos JPA
 @Entity
@@ -17,7 +19,7 @@ import javax.persistence.Transient;
 public class Product implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	//mapeamentos JPA
+	// mapeamentos JPA
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -25,21 +27,26 @@ public class Product implements Serializable {
 	private String description;
 	private Double price;
 	private String imgUrl;
-	//um mesmo produto não pode estar em 2 categorias ao mesmo tempo, por isso se usa
-	//o Set ao invés da List
-	//coleção precisa ser já instanciada para não inicializar nula mas somente vazia
-	//associação com outras entidades	
-	//Transient impede do JPA interpretar a linha abaixo
-	@Transient
+	// um mesmo produto não pode estar em 2 categorias ao mesmo tempo, por isso se
+	// usa
+	// o Set ao invés da List
+	// coleção precisa ser já instanciada para não inicializar nula mas somente
+	// vazia
+	// associação com outras entidades
+	// Transient impede do JPA interpretar a linha abaixo
+	// @Transient
+	@ManyToMany // associaçãp muito para muito
+	// nome da tabela no banco de dados e relação com as chaves estrangeiras
+	@JoinTable(name = "tb_product_category", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
 	private Set<Category> categories = new HashSet<>();
-	
-	public Product()
-	{
-		
+
+	public Product() {
+
 	}
-	
-	//não incluir no construtor coleções de dados (Set, List e etc), pois eles já foram instanciados
-	//logo acima
+
+	// não incluir no construtor coleções de dados (Set, List e etc), pois eles já
+	// foram instanciados
+	// logo acima
 	public Product(Long id, String name, String description, Double price, String imgUrl) {
 		super();
 		this.id = id;
